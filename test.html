@@ -1,0 +1,1016 @@
+<html style="font-size: 100px;"><script id="allow-copy_script">(function agent() {
+	let unlock = false
+	document.addEventListener('allow_copy', (event) => {
+		unlock = event.detail.unlock
+	})
+
+	const copyEvents = [
+		'copy',
+		'cut',
+		'contextmenu',
+		'selectstart',
+		'mousedown',
+		'mouseup',
+		'mousemove',
+		'keydown',
+		'keypress',
+		'keyup',
+	]
+	const rejectOtherHandlers = (e) => {
+		if (unlock) {
+			e.stopPropagation()
+			if (e.stopImmediatePropagation) e.stopImmediatePropagation()
+		}
+	}
+	copyEvents.forEach((evt) => {
+		document.documentElement.addEventListener(evt, rejectOtherHandlers, {
+			capture: true,
+		})
+	})
+})()</script><head>
+	<base href="http://192.168.0.230:8080/efg/">
+	<meta charset="utf-8">
+	<title>飞花令</title>
+	<link rel="stylesheet" href="static/mobileSpecialTopic/css/base.css">
+	<link rel="stylesheet" href="static/mobileSpecialTopic/css/PoetryDetails.css">
+	<script type="text/javascript" src="static/testPhone/js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="static/testPhone/js/1080screen_self-adaption.js"></script>
+	<script type="text/javascript" src="static/readingChallenger/js/jquery-json.js"></script>
+	<link rel="stylesheet" href="static/prompt/prompt.css">
+	<script type="text/javascript" src="static/prompt/prompt.js"></script>
+	<script type="text/javascript">
+		document.write("<scr" + "ipt src=\"static/js/weChat/CustomShare.js\"></sc" + "ript>");
+	</script><script src="static/js/weChat/CustomShare.js"></script><script src="static/js/weChat/jweixin-1.6.0.js"></script><script src="static/js/weChat/JS-SDK_Signature-[share].js"></script>
+	<style>
+		/*退出弹窗*/
+		.exit {
+			display: none;
+		}
+
+		.exit_pop {
+			left: 50%;
+			top: 50%;
+			width: 960px;
+			width: 9.6rem;
+			height: 800px;
+			height: 8rem;
+			margin-left: -480px;
+			margin-left: -4.8rem;
+			margin-top: -400px;
+			margin-top: -4rem;
+			border-radius: 20px;
+			border-radius: .2rem;
+			background-color: #FFFFFF;
+		}
+
+		.exit_pop_close {
+			width: 96px;
+			width: .96rem;
+			height: 96px;
+			height: .96rem;
+			background: url(../images/close_gray.png) no-repeat;
+			background-size: 100% 100%;
+			right: 20px;
+			right: .2rem;
+			top: 20px;
+			top: .2rem;
+			z-index: 10;
+		}
+
+		.exit_pop_content {
+			width: 100%;
+			height: 600px;
+			height: 6rem;
+			border-radius: 20px;
+			border-radius: .2rem;
+		}
+
+		.exit_pop_text {
+			width: 860px;
+			width: 8.6rem;
+			margin: auto;
+			padding-top: 250px;
+			padding-top: 2.5rem;
+			line-height: 72px;
+			line-height: .72rem;
+			font-size: 48px;
+			font-size: .48rem;
+		}
+
+		.exit_pop_bottom {
+			width: 100%;
+			height: 200px;
+			height: 2rem;
+			font-size: 0;
+			background-color: #FFFFFF;
+			border-radius: 20px;
+			border-radius: .2rem;
+		}
+
+		.back_exam, .yes {
+			width: 300px;
+			width: 3rem;
+			height: 100px;
+			height: 1rem;
+			line-height: 100px;
+			line-height: 1rem;
+			bottom: 50px;
+			bottom: .5rem;
+			font-size: 36px;
+			font-size: .36rem;
+			border-radius: 10px;
+			border-radius: .1rem;
+		}
+
+		.back_exam {
+			left: 50px;
+			left: .5rem;
+			color: #308cea;
+			background-color: #FFFFFF;
+			border: 2px solid #308CEA;
+		}
+
+		.yes {
+			right: 50px;
+			right: .5rem;
+			color: #FFFFFF;
+			background-color: #308CEA;
+		}
+
+		.box1 {
+			z-index: 999999;
+			display: block;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 100%;
+			height: 5rem;
+			background-color: #fff;
+		}
+
+		.box2 {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.box1 p {
+			display: block;
+			margin: 0.5rem;
+			text-align: center;
+			font-size: 0.72rem;
+			line-height: 0.72rem;
+
+
+		}
+
+		.loading {
+
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: center;
+			width: 3rem;
+			height: 2rem;
+			margin: 0 auto;
+			/*margin-top: 100px;*/
+		}
+
+		.loading li {
+
+			display: inline-block;
+			width: 0.1rem;
+			height: 100%;
+			margin: 0 0.2rem;
+			border-radius: 0.04rem;
+			background: lightgreen;
+			animation: load 1s ease infinite;
+		}
+
+		@keyframes load {
+
+			0%,
+			100% {
+				height: 1rem;
+				background: lightgreen;
+			}
+
+			50% {
+				height: 2rem;
+				/*margin: -0.15rem 0;*/
+				background: lightblue;
+			}
+		}
+
+		.loading li:nth-child(2) {
+			animation-delay: 0.2s;
+		}
+
+		.loading li:nth-child(3) {
+			animation-delay: 0.4s;
+		}
+
+		.loading li:nth-child(4) {
+			animation-delay: 0.6s;
+		}
+
+		.loading li:nth-child(5) {
+			animation-delay: 0.8s;
+		}
+	</style><input type="hidden" id="_w_simile" data-inspect-config="3"><script type="text/javascript" src="chrome-extension://odphnbhiddhdpoccbialllejaajemdio/scripts/inspector.js"></script></head>
+
+
+<body>
+<div class="app" style="height: 1920px;">
+
+	<div class="exit pop_up_back" id="goBack">
+		<div class="exit_pop_pr pop_up_pr">
+			<div class="exit_pop pa">
+				<div class="exit_pop_content b_box tcenter pr">
+					<p class="exit_pop_text bold block wb_all">是否想要退出答题？</p>
+				</div>
+				<div class="exit_pop_bottom pr">
+					<a class="back_exam block bold pa tcenter b_box" onclick="$('#goBack').hide()">返回答题</a>
+					<a class="yes block bold pa tcenter" onclick="goBack()">确认退出</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="exit pop_up_back" id="nextLevel">
+		<div class="exit_pop_pr pop_up_pr">
+			<div class="exit_pop pa">
+				<div class="exit_pop_content b_box tcenter pr">
+					<p class="exit_pop_text bold block wb_all">是否进入下一阶？</p>
+				</div>
+				<div class="exit_pop_bottom pr">
+					<a class="back_exam block bold pa tcenter b_box" onclick="nextLevel()">继续答题</a>
+					<a class="yes block bold pa tcenter" onclick="goHistory()">结束答题</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="header">
+		<a id="backButton" onclick="$('#goBack').show();">
+			<!-- 返回 -->
+			<img class="return" src="static/mobileSpecialTopic/images/arrow-back_white.png" alt="返回">
+		</a>
+		<h3>飞花令</h3>
+		<span><a href="javascript:void(0)"></a></span><!-- 占位 -->
+	</div>
+
+
+	<div class="content">
+		<div class="nav" style="margin: 0px auto 2rem;">
+			<ul>
+				<li class="left">第<span>9</span> 阶 ( <span>20</span>题 )</li>
+				<li class="right"><span>998562</span>s</li>
+			</ul>
+			<div class="wrong">
+				<p>答错: <span class="wrongNumber">0</span>/<span>5</span></p>
+				<div class="progress">
+					<div><span style="width: 100%;"></span></div>
+				</div>
+			</div>
+		</div>
+		<h3>第<span>11</span>题</h3>
+		<div class="poetry" style="display: block;">
+			<h3>请从九宫选择文字组成正确答案。</h3>
+			<ul class="grid  nine"><li onclick="setChar('低',this)">低</li><li onclick="setChar('薄',this)">薄</li><li onclick="setChar('蟹',this)" class="">蟹</li><li onclick="setChar('池',this)">池</li><li onclick="setChar('塘',this)">塘</li><li onclick="setChar('浅',this)">浅</li><li onclick="setChar('梁',this)">梁</li><li onclick="setChar('粱',this)">粱</li><li onclick="setChar('鱼',this)">鱼</li></ul>
+			<p class="p">水落（），天寒梦泽深。</p>
+			<ul class="text"><li></li><li></li><li></li></ul>
+			<p class="correctAnswer" style="display: none">正确答案:<span id="answer1"></span></p>
+		</div>
+		<div class="choice" style="display: none;">
+			<form action="" method="get">
+				<img id="question_img" src="" style="display: none; width: 4rem; margin: 0px auto;">
+				<h3 style="-webkit-text-size-adjust: none;"></h3>
+				<ul></ul>
+
+
+				<p class="correctAnswer" style="display: none">正确答案:<span id="answer2"></span></p>
+			</form>
+		</div>
+
+	</div>
+
+	<div class="footer">
+		<ul>
+
+			<li class="determine" id="sure" onclick="confirm()">确定</li>
+		</ul>
+	</div>
+
+	<div class="main" style="display: none;">
+		<div class="head_portrait">
+			<img src="static/mobileSpecialTopic/images/4.jpg" alt="">
+		</div>
+		<p>国之栋梁</p>
+		<p>—— 挑战即将开始 ——</p>
+		<span class="countDown">0</span>
+	</div>
+
+	<audio style="height: 0" src="static/mobileSpecialTopic/huaxin.mp3" controls="controls" autoplay="autoplay" loop="loop" jm_neat="819567617"></audio>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="box1" style="display: none; height: 1920px;">
+	<div class="box2">
+		<ul class="loading">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<p>数据分析中</p>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	//region 定义全局变量
+	var URL = '';
+	var BOOK_ID = "d439cf0edf2b445481d0ecee1f036949";
+	var QUESTION_MOTIF = "";
+	var QUESTION_WEIGHT = 8;
+	var TEST_HISTORY_ID = "";
+	var list = []; //题目列表
+	var answerArray = [];//已回答的答案列表
+	var currAnswer = {};//正在选择的答案
+	var currQuestion = {};//正在回答的题目
+	var questionNumber = 1;//题目序号
+	var EXACT_NUMBER = 0;//答对题数
+	var ALL_NUMBER = 0;//总题数
+	var times = 0;//设置时间要在init()中
+	var frequency = 5;//保存频率，每5题保存一次
+	var isAsync = false;//ajax同步标示
+	// var isSubmit = false;
+	var failNumber = 0;//已回答错误次数
+	var totalFailNumber = 5//回答错误限制
+	var editRankStatus = '0';
+	var duration = 3;//回答错误后正确答案显示的时长，单位：秒
+	var stopTimer = false;//暂停倒计时
+	var isSkip = false;
+	var nextQuestionTimer;
+	//endregion
+	// 息屏的时候停止定时器
+	document.addEventListener('visibilitychange', function () {
+		if (document.webkitVisibilityState == 'hidden') {
+			console.log("hidden");
+			stopTimer = true;
+		} else {
+			console.log("show[");
+			stopTimer = false;
+		}
+	});
+	// 息屏的时候停止音乐
+	document.addEventListener('visibilitychange', function () {
+		if (document.webkitVisibilityState == 'hidden') {
+			$("audio")[0].pause()
+		} else {
+			stopTimer = false;
+			$("audio")[0].play()
+		}
+	});
+	//页面加载完成后
+	$(function () {
+		var height = window.innerHeight;
+		$(".box1").css("height", height + "px")
+		$('.app').css('height', $(window).height() + 'px');
+		window.onpopstate = function () {
+			history.pushState(null, null, "specialTopic/poetryChallenge");
+			confirmBack();
+		}
+		history.pushState(null, null, "specialTopic/poetryChallenge");
+		insertHistory();
+		getQuestion();
+		progressShow(0);
+		showMain();
+		// setQuestion();开幕倒计时结束后再显示题目
+		isAsync = true;
+	})
+
+	//todo 测试用跳过当前题目
+	function test() {
+		$("input[value=1]").parent().parent().addClass("db");
+		$(".text").text(currQuestion.ANSWER[0].ANSWER_CONTENT);
+		confirm();
+	}
+
+	//我不会
+	function skip() {
+		return;
+		isSkip = true;
+		confirm();
+	}
+
+	//开幕倒计时，显示阶级称号和头衔
+	function showMain() {
+		//获取累计得分，设置相应logo
+		$.ajax({
+			url: "specialTopic/getPoetryChallengeTotalScore",
+			type: "POST",
+			data: {
+				//BOOK_ID:'d439cf0edf2b445481d0ecee1f036949'
+			},
+			// async: false,
+			dataType: "json",
+			success: function (data) {
+				var str = "";
+				var imgSrc = "";
+				if (data <= 100) {
+					str = "初出茅庐"
+					imgSrc = "1.jpg";
+				} else if (data <= 250) {
+					str = "金榜题名"
+					imgSrc = "2.jpg";
+				} else if (data <= 450) {
+					str = "钦点翰林"
+					imgSrc = "3.jpg";
+				} else if (data <= 700) {
+					str = "国之栋梁"
+					imgSrc = "4.jpg";
+				} else if (data <= 1000) {
+					str = "拜相封侯"
+					imgSrc = "5.jpg";
+				} else if (data <= 1400) {
+					str = "九五至尊"
+					imgSrc = "6.jpg";
+				} else if (data <= 2000) {
+					str = "万朝来贺"
+					imgSrc = "7.jpg";
+				} else {
+					str = "雄霸天下"
+					imgSrc = "8.jpg";
+				}
+				$(".main p:eq(0)").text(str);
+				$(".main .head_portrait img").attr("src", "static/mobileSpecialTopic/images/" + imgSrc);
+				//开幕倒计时
+				$countDown = $(".countDown");
+				var timer = setInterval(function () {
+					$countDown.text($countDown.text() - 1);
+					if ($countDown.text() <= 0) {
+						clearInterval(timer);
+						$(".main").hide();
+						setQuestion();
+						startCountDown();
+					}
+				}, 1000);
+			}
+		});
+	}
+
+	//答题倒计时,时间到结束答题
+	function startCountDown() {
+		countTime = setInterval(function () {
+			if (!stopTimer) {
+				times = --times < 0 ? 0 : times;
+				$('.nav .right span').text(times);
+			}
+			if (times == 0) {
+				clearInterval(countTime);
+				autoSubmit();
+				goHistory();
+			}
+		}, 1000);
+	}
+
+	//隐藏所有控件, 清理一些旧的值，初始化部分值
+	function init() {
+		$("#sure").text("确定");
+		$("#sure").attr("onclick", "confirm()");
+
+		$('.content').removeClass('error') //回答错误的样式清除
+		$('.content').removeClass('correct') //回答正确的样式清除
+		$(".nav").css("margin", "0 auto 2rem");
+		$(".poetry").hide();
+		$(".poetry h3").text('');
+		$(".p").text('');
+		$(".grid").html('');
+		$(".text").html('');
+		$("#answer1").text('');
+		$("#answer2").text('');
+		$(".correctAnswer").hide();
+
+		$("#question_img").hide();
+		$(".choice").hide();
+		$(".choice h3").text('');
+		$(".choice ul").children().remove();
+
+		//初始化 当前回答（对应历史详情中的记录） 的值
+		currAnswer = {};
+		currAnswer.TEST_HISTORY_ID = TEST_HISTORY_ID;
+		currAnswer.BEGIN_DATE = new Date().Format("yyyy-MM-dd HH:mm:ss");
+		currAnswer.BOOK_ID = BOOK_ID;
+		currAnswer.QUESTION_ID = currQuestion.QUESTION_ID;
+		// isSubmit = false;
+		times = 60;//倒计时时间
+		stopTimer = false;//是否暂停倒计时
+		isSkip = false;
+	}
+
+	//显示题目
+	function setQuestion() {
+		currQuestion = list.pop();
+		//没有题目，当前这一阶回答完，选择是否进入下一级
+		if (!currQuestion) {
+			stopTimer = true;
+			QUESTION_WEIGHT < 29 ? QUESTION_WEIGHT++ : QUESTION_WEIGHT;
+			getQuestion();
+			updateFlyFlowerLevel();
+			$("#nextLevel").show();
+			return false;
+		}
+		init();
+		var type = currQuestion.QUESTION_TYPE;
+		switch (type) {
+			case '10':
+				showChoiceQuestion();
+				break;
+			case '11':
+				showChoiceQuestion();
+				showPic();
+				break;
+			case '20':
+			case '21':
+				showTable(9);
+				break;
+			case '30':
+			case '31':
+				showTable(12);
+				break;
+			case '40':
+			case '41':
+				showTable(16);
+				break;
+			default:
+				toast("题目异常，跳过该题");
+				questionNumber++;
+				setQuestion();
+		}
+	}
+
+	//显示选择题图片
+	function showPic() {
+		$("#question_img").attr('src', currQuestion.QUESTION_PICTURE);
+		$("#question_img").show();
+		$(".nav").css("margin", "0 auto 3rem");
+	}
+
+	//显示选择题
+	function showChoiceQuestion() {
+		$('.content .poetry').hide();
+		$(".content .choice").show();
+		$(".content h3 span").text(questionNumber);
+		//设置题号和题目内容
+		// $("#number_1").html(questionNumber);
+		if (currQuestion.QUESTION_TOPIC.length >= 100) {
+			$(".nav").css("margin", "0 auto 2rem");
+		} else {
+			$(".nav").css("margin", "0 auto 1rem");
+		}
+		$(".choice h3").text(currQuestion.QUESTION_TOPIC);
+		//打乱答案，并记录答案顺序
+		var temp = currQuestion.ANSWER;
+		temp.sort(function () {
+			return 0.5 - Math.random();
+		});
+		var ANSWERS = "";
+		for (var i = 0; i < temp.length - 1; i++) {
+			ANSWERS += temp[i].ANSWER_ID + ",";
+		}
+		ANSWERS += temp[temp.length - 1].ANSWER_ID;
+		currAnswer.ANSWERS = ANSWERS;
+		//将答案添加到答案区域中
+		asciiCodeA = 65;
+		for (var i = 0; i < temp.length; i++) {
+			var ABCD = String.fromCharCode(asciiCodeA++);
+			// var str = "<li><label class='label_radio block b_box' for=" + temp[i].ANSWER_ID + ">" +
+			//     "<input name=sample-radio id=" + temp[i].ANSWER_ID + " value=" + temp[i].ANSWER_TYPE + " type=radio />" +
+			//     "<span>" + ABCD + "</span>、<span>" + temp[i].ANSWER_CONTENT + "</span></label></li>"
+
+			var str = '<li><label for=' + temp[i].ANSWER_ID + '>' +
+				'<input id=' + temp[i].ANSWER_ID + ' type="radio" name="fruits" value=' + temp[i].ANSWER_TYPE + ' />' +
+				'<p>' + ABCD + '：' + temp[i].ANSWER_CONTENT + '</p></label></li>';
+			$(".choice ul").append(str);
+		}
+		//添加答案的点击事件
+		$(document).ready(function () {
+			$(".content ul li").click(function () {
+				$(this).addClass("db").siblings().removeClass("db");
+			});
+		});
+	}
+
+	//填充九宫格并显示,格子数量为gridNumber
+	function showTable(gridnumber) {
+		$('.content .poetry').show();
+		$(".content .choice").hide();
+		$(".content h3 span").text(questionNumber);
+		$(".poetry h3").text(currQuestion.QUESTION_TIPS);
+		$(".p").text(currQuestion.QUESTION_TOPIC);
+		if (gridnumber === 9) {
+			$('.grid').addClass('nine')
+			$('.grid').removeClass('twelve')
+		} else if (gridnumber === 12 || gridnumber === 16) {
+			$('.grid').addClass('twelve')
+			$('.grid').removeClass('nine')
+		}
+		//获得将要显示的字并打乱
+		var chars = currQuestion.QUESTION_CONTENT.split('');
+		chars.sort(function () {
+			return 0.5 - Math.random()
+		});
+		var table = $(".grid");
+		//创建九宫格的格子
+		var str = "";
+		for (var i = 0; i < gridnumber; i++) {
+			str += "<li></li>";
+		}
+		table.html(str);
+		//填充九宫格内容
+		table.children().each(function (index) {
+			$(this).attr("onclick", "setChar('" + chars[index] + "',this)");
+			$(this).text(chars[index]);
+		})
+		//创建答题区的格子
+		var nine_answer = $(".text");
+		str = ""
+		for (var i = 0; i < currQuestion.ANSWER[0].ANSWER_CONTENT.length; i++) {
+			str += "<li></li>";
+		}
+		nine_answer.html(str)
+	}
+
+	//九宫格的点击事件
+	function setChar(ch, obj) {
+		//设置九宫格答题区文字
+		$(".text").children().each(function () {
+			if ($(this).text() == "") {
+				$(this).text(ch);
+				//九宫格格子设置为已选择
+				$(obj).addClass("Selection");
+				$(obj).attr("onclick", "delChar('" + ch + "',this)");
+				return false;
+			}
+		});
+	}
+
+	//九宫格第被选中状态时点击事件
+	function delChar(ch, obj) {
+		nine_answer = $(".text");
+		nine_answer.children().each(function () {
+			//todo 改成删除最后一个匹配字符
+			if ($(this).text() == ch) {
+				$(this).text("");
+				//重新排序九宫格答题区文字
+				var chars = nine_answer.text().replace(/\s+/g, "");
+				$(".text").children().text("");
+				for (var i = 0; i < chars.length; i++) {
+					setChar(chars[i], null);
+				}
+				$(obj).removeClass("Selection");
+				$(obj).attr("onclick", "setChar('" + ch + "',this)");
+				return false;
+			}
+		});
+	}
+
+	//点击确定按钮触发,将当前答案暂存本地
+	function confirm() {
+		if (!$(".db").text() && !$(".text").text() && !isSkip) {
+			toast('请选择答案');
+			return false;
+		}
+		//保存本次答题相关信息
+		currAnswer.END_DATE = new Date().Format("yyyy-MM-dd HH:mm:ss");
+		if (isSkip) {
+			//倒计时结束自动提交
+			currAnswer.ANSWER_RESULT = '0';
+		} else if (currQuestion.QUESTION_TYPE <= 11) {
+			//选择题
+			currAnswer.ANSWER_ID = $(".db input").attr("id");
+			currAnswer.ANSWER_RESULT = $(".db input").val();
+		} else if (currQuestion.QUESTION_TYPE >= 20) {
+			//宫格题
+			currAnswer.ANSWER_CONTENT = $(".text").text();
+			if ($(".text").text() == currQuestion.ANSWER[0].ANSWER_CONTENT) {
+				currAnswer.ANSWER_RESULT = '1';
+			} else {
+				currAnswer.ANSWER_RESULT = '0';
+			}
+		}
+
+		answerArray.push(currAnswer);
+		ALL_NUMBER++;
+		// isSubmit = true;
+		if (currAnswer.ANSWER_RESULT == '1') {
+			//回答正确，分数加一，显示下一题
+			EXACT_NUMBER++;
+			questionNumber++;
+			setQuestion();
+		} else {
+			//回答错误，错误次数加一，显示正确答案5秒
+			failNumber++;
+			progressShow(failNumber);
+			showRightAnswer();
+		}
+		//每5题存一次,
+		if (ALL_NUMBER % frequency == 0) {
+			saveHistory();
+			// getQuestion();
+		}
+	}
+
+	//回答错误，更新页面上的错误次数
+	function progressShow(e) {
+		$('.progress span').animate({
+			'width': 100 - (e / totalFailNumber * 100) + '%'
+		})
+		$('.wrongNumber').text(e);
+	}
+
+	//回答错误显示正确答案五秒
+	function showRightAnswer() {
+		//移除选项的点击事件
+		$(".choice ul").children().unbind();
+		$(".grid").children().attr('onclick', '');
+		//生成一个透明div屏蔽点击
+		//$("body").append(`<div id="shade" style="z-index: 9999;position: fixed;top: 0;width: 100%;height: ${$(window).height()}px"></div>`);
+		stopTimer = true;
+		$("#backButton").removeAttr("onclick");
+		//"确定"按钮改成下一题
+		$("#sure").text("下一题");
+		$("#sure").attr("onclick", "nextQuestion()");
+		//显示正确答案
+		$('.content').addClass('error')
+		if (currQuestion.QUESTION_TYPE <= 11) {
+			$(".db").addClass("error").removeClass("db")
+			$("input[value=1]").parent().parent().addClass("correct");
+			for (var i = 0; i < currQuestion.ANSWER.length; i++) {
+				if (currQuestion.ANSWER[i].ANSWER_TYPE == 1) {
+					var rightAnswer = currQuestion.ANSWER[i].ANSWER_CONTENT;
+					$("#answer2").text(rightAnswer);
+					$(".correctAnswer").show();
+				}
+			}
+		}
+		if (currQuestion.QUESTION_TYPE >= 20) {
+			$("#answer1").text(currQuestion.ANSWER[0].ANSWER_CONTENT);
+			$(".correctAnswer").show();
+		}
+		//5秒后隐藏正确答案显示下一题
+		nextQuestionTimer = setTimeout(function () {
+			nextQuestion();
+		}, duration * 1000)
+	}
+
+	function nextQuestion() {
+		clearTimeout(nextQuestionTimer);
+		if (failNumber >= totalFailNumber) {
+			//错误次数用完进入回答结束
+			goHistory();
+			return false;
+		}
+		$("#shade").remove();
+		//$("#sure").show();
+		$("#backButton").attr("onclick", "$('#goBack').show();");
+		questionNumber++;
+		setQuestion();
+	}
+
+	//返回或时间为零时，自动保存
+	function autoSubmit() {
+		if (!$(".db").text() && !$(".text").text()) {
+			// currAnswer.END_DATE = new Date().toLocaleString('chinese', {hour12: false});
+			// currAnswer.ANSWER_RESULT = 0;
+			// answerArray.push(currAnswer);
+			// ALL_NUMBER++;
+			isSkip = true;
+		}
+		confirm();
+	}
+
+	//清空九宫格答案 (暂未使用）
+	function reset() {
+		$(".nine_answer").children().text("");
+		$(".table_box ul a").each(function () {
+			$(this).attr("onclick", "setChar('" + $(this).text() + "',this)");
+			$(this).attr("class", "inblock b_box")
+		})
+	}
+
+	//确认返回提示框
+	function confirmBack() {
+		stopTimer = true;
+		$("#goBack").show();
+	}
+
+	//返回时自动保存
+	function goBack() {
+		// document.getElementsByClassName('box1')[0].style.display='block';
+		$(".box1").show("fast", function () {
+			//保存本次答题相关信息
+			currAnswer.END_DATE = new Date().Format("yyyy-MM-dd HH:mm:ss");
+			if (!$(".db").text() && !$(".text").text()) {
+				currAnswer.ANSWER_RESULT = '0';
+			} else if (currQuestion.QUESTION_TYPE <= 11) {
+				//选择题
+				currAnswer.ANSWER_ID = $(".db input").attr("id");
+				currAnswer.ANSWER_RESULT = $(".db input").val();
+			} else if (currQuestion.QUESTION_TYPE >= 20) {
+				//宫格题
+				currAnswer.ANSWER_CONTENT = $(".text").text();
+				if ($(".text").text() == currQuestion.ANSWER[0].ANSWER_CONTENT) {
+					currAnswer.ANSWER_RESULT = '1';
+				} else {
+					currAnswer.ANSWER_RESULT = '0';
+				}
+
+			}
+			answerArray.push(currAnswer);
+			ALL_NUMBER++;
+			if (currAnswer.ANSWER_RESULT == '1') {
+				//回答正确，分数加一，显示下一题
+				EXACT_NUMBER++;
+			} else {
+				//回答错误，错误次数加一，显示正确答案5秒
+				failNumber++;
+			}
+			editRankStatus = '1';
+			isAsync = false;
+			saveHistory();
+			window.location.href = 'specialTopic/poetryChallengePhaseEnd.do?isFlyFlower=1&' +
+				'BOOK_ID=d439cf0edf2b445481d0ecee1f036949&QUESTION_MOTIF=&QUESTION_WEIGHT=' + QUESTION_WEIGHT + '&title=飞花令&TEST_HISTORY_ID=' + TEST_HISTORY_ID;
+			// autoSubmit();
+			// goHistory();
+		})
+	}
+
+	//取消返回
+	function cancelBack() {
+		stopTimer = false;
+		$("#goBack").hide();
+	}
+
+	//同步保存后进入历史页面
+	function goHistory() {
+		editRankStatus = '1';
+		isAsync = false;
+		saveHistory();
+		window.location.href = 'specialTopic/poetryChallengePhaseEnd.do?isFlyFlower=1&' +
+			'BOOK_ID=d439cf0edf2b445481d0ecee1f036949&QUESTION_MOTIF=&QUESTION_WEIGHT=' + QUESTION_WEIGHT + '&title=飞花令&TEST_HISTORY_ID=' + TEST_HISTORY_ID;
+	}
+
+	//todo 是否进入下一阶级
+	function nextLevel() {
+		$("#nextLevel").hide();
+		questionNumber = 1;
+		setQuestion();
+	}
+
+
+	//更新用户飞花令等级
+	function updateFlyFlowerLevel() {
+		$.ajax({
+			url: "specialTopic/updateFlyFlowerLevel",
+			type: "POST",
+			data: {
+				SPECIAL_TOPIC_WEIGHT_LEVEL: QUESTION_WEIGHT
+			},
+			dataType: "json",
+		})
+	}
+
+	//新增一条历史记录，获得历史记录ID
+	function insertHistory() {
+		$.ajax({
+			url: "specialTopic/insertHistory",
+			type: "POST",
+			data: {
+				BOOK_ID: BOOK_ID
+			},
+			dataType: "json",
+			success: function (data) {
+				TEST_HISTORY_ID = data.TEST_HISTORY_ID;
+			}
+		})
+	}
+
+	//获取题目列表并打乱，每次5题
+	function getQuestion() {
+		// $("#level").text("第"+temp[QUESTION_WEIGHT]+"阶（20题）");
+		$(".left span:eq(0)").text(QUESTION_WEIGHT + 1);
+		$.ajax({
+			type: "POST",
+			url: 'specialTopic/getFlyFlowerQuestion',
+			async: isAsync,
+			data: {
+				BOOK_ID: BOOK_ID,
+				QUESTION_WEIGHT: QUESTION_WEIGHT,
+				QUESTION_MOTIF: QUESTION_MOTIF,
+				pageIndex: 0,
+				pageSize: 20
+			},
+			dataType: 'json',
+			success: function (data) {
+				list = data.list;
+				/*
+				var i = list.length;
+				while (--i) {
+					var j = Math.floor(Math.random() * i);
+					// [list[j], list[i]] = [list[i], list[j]];//es6 safari低版本不兼容
+					var temp = list[j];
+					list[j] = list[i];
+					list[i] = list[j];
+				}
+				*/
+				list.sort(function () {
+					return (0.5 - Math.random());
+				});
+			}
+		});
+	}
+
+	//每答5题保存一次,并更新答题历史中的记录
+	function saveHistory() {
+		$.ajax({
+			type: "POST",
+			url: 'specialTopic/saveHistoryDetailPhase',
+			async: isAsync,
+			data: {
+				answerArray: JSON.stringify(answerArray),
+				TEST_HISTORY_ID: TEST_HISTORY_ID,
+				ALL_NUMBER: ALL_NUMBER,
+				ceiling: ALL_NUMBER,
+				EXACT_NUMBER: EXACT_NUMBER,
+				editRankStatus: editRankStatus
+			},
+			dataType: 'json',
+			success: function (data) {
+				console.log("保存成功")
+			}
+		})
+		answerArray = [];
+	}
+
+	//进入飞花令答题页面前判断题目数量
+	function getQuestionNumber() {
+		var num = 0;
+		$.ajax({
+			url: "specialTopic/getFlyFlowerQuestionNumber",
+			type: "POST",
+			async: false,
+			data: {
+				BOOK_ID: BOOK_ID,
+				// QUESTION_WEIGHT: QUESTION_WEIGHT,
+				// QUESTION_MOTIF: modif
+			},
+			dataType: "json",
+			success: function (data) {
+				console.log(data);
+				num = data.questionNumber;
+			}
+		})
+		return num;
+	};
+	//时间格式化
+	Date.prototype.Format = function (fmt) {
+		var o = {
+			"M+": this.getMonth() + 1, //月份
+			"d+": this.getDate(), //日
+			"H+": this.getHours(), //小时
+			"m+": this.getMinutes(), //分
+			"s+": this.getSeconds(), //秒
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度
+			"S": this.getMilliseconds() //毫秒
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+</script>
+
+
+
+<div id="neatDiv819567617" style="color: revert; direction: ltr; font-family: revert; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: revert; font-stretch: revert; font-style: revert; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: revert; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: rgb(201, 223, 242) !important; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: revert; border-radius: revert; border-collapse: revert; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; bottom: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: revert; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: revert; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; left: 0px; letter-spacing: revert; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: 0.45; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: absolute; quotes: revert; r: revert; resize: revert; right: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: center; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; top: 1806px; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: revert; visibility: revert; border-spacing: revert; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: 210px; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: 2147483647;"><table id="neatTable819567617" style="color: revert; direction: ltr; font-family: revert; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: revert; font-stretch: revert; font-style: revert; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: revert; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: revert; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: revert; border-radius: revert; border-collapse: separate; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: revert; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: revert; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: revert; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: revert; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: revert; visibility: revert; border-spacing: 0px; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: 100%; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"><tbody><tr style=""><td style="color: black !important; direction: ltr; font-family: tahoma !important; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: 7pt !important; font-stretch: revert; font-style: normal; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: bold; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: rgb(201, 223, 242) !important; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: 1px dotted black; border-radius: revert; border-collapse: revert; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: default; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: 19px !important; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: normal; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: left; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: middle; visibility: revert; border-spacing: revert; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: 100%; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"><table style="color: revert; direction: ltr; font-family: revert; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: revert; font-stretch: revert; font-style: revert; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: revert; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: revert; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: 1px solid black; border-radius: revert; border-collapse: separate; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: revert; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: revert; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: revert; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: revert; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: revert; visibility: revert; border-spacing: 0px; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: 100%; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"><tbody><tr style="color: revert; font-family: revert; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: revert; font-stretch: revert; font-style: revert; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: revert; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: revert; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: revert; border-radius: revert; border-collapse: revert; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: revert; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: 19px !important; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: revert; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: revert; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: revert; visibility: revert; border-spacing: revert; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: revert; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"><td style="color: revert; font-family: revert; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: revert; font-stretch: revert; font-style: revert; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: revert; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: rgb(201, 223, 242) !important; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: revert; border-radius: revert; border-collapse: revert; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: revert; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: 19px !important; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: revert; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: center; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: middle; visibility: revert; border-spacing: revert; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: 20px; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"><img src="chrome-extension://pbghcbaeehloijjcebiflemhcebmlnke/img/icon16.png"></td><td id="neatHCell819567617" style="color: black !important; direction: ltr; font-family: tahoma !important; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: 7pt !important; font-stretch: revert; font-style: normal; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: bold; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: rgb(201, 223, 242) !important; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: revert; border-radius: revert; border-collapse: revert; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: default; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: 19px !important; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: normal; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: center; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: middle; visibility: revert; border-spacing: revert; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: revert; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"> MP3 File  0.99 MB</td><td style="color: revert; font-family: revert; font-feature-settings: revert; font-kerning: revert; font-optical-sizing: revert; font-palette: revert; font-size: revert; font-stretch: revert; font-style: revert; font-synthesis: revert; font-variant: revert; font-variation-settings: revert; font-weight: revert; forced-color-adjust: revert; text-orientation: revert; text-rendering: revert; -webkit-font-smoothing: revert; -webkit-locale: revert; -webkit-text-orientation: revert; -webkit-writing-mode: revert; writing-mode: revert; zoom: revert; accent-color: revert; place-content: revert; place-items: revert; place-self: revert; alignment-baseline: revert; animation: revert; app-region: revert; appearance: revert; aspect-ratio: revert; backdrop-filter: revert; backface-visibility: revert; background: rgb(201, 223, 242) !important; background-blend-mode: revert; baseline-shift: revert; block-size: revert; border-block: revert; border: revert; border-radius: revert; border-collapse: revert; border-end-end-radius: revert; border-end-start-radius: revert; border-inline: revert; border-start-end-radius: revert; border-start-start-radius: revert; inset: revert; box-shadow: revert; box-sizing: revert; break-after: revert; break-before: revert; break-inside: revert; buffered-rendering: revert; caption-side: revert; caret-color: revert; clear: revert; clip: revert; clip-path: revert; clip-rule: revert; color-interpolation: revert; color-interpolation-filters: revert; color-rendering: revert; color-scheme: revert; columns: revert; column-fill: revert; gap: revert; column-rule: revert; column-span: revert; contain: revert; contain-intrinsic-block-size: revert; contain-intrinsic-size: revert; contain-intrinsic-inline-size: revert; container: revert; content: revert; content-visibility: revert; counter-increment: revert; counter-reset: revert; counter-set: revert; cursor: revert; cx: revert; cy: revert; d: revert; display: revert; dominant-baseline: revert; empty-cells: revert; fill: revert; fill-opacity: revert; fill-rule: revert; filter: revert; flex: revert; flex-flow: revert; float: revert; flood-color: revert; flood-opacity: revert; grid: revert; grid-area: revert; height: 19px !important; hyphenate-character: revert; hyphens: revert; image-orientation: revert; image-rendering: revert; inline-size: revert; inset-block: revert; inset-inline: revert; isolation: revert; letter-spacing: revert; lighting-color: revert; line-break: revert; line-height: 100% !important; list-style: revert; margin-block: revert; margin: 0px; margin-inline: revert; marker: revert; mask: revert; mask-type: revert; max-block-size: revert; max-height: revert; max-inline-size: revert; max-width: revert; min-block-size: revert; min-height: revert; min-inline-size: revert; min-width: revert; mix-blend-mode: revert; object-fit: revert; object-position: revert; object-view-box: revert; offset: revert; opacity: revert; order: revert; origin-trial-test-property: revert; orphans: revert; outline: revert; outline-offset: revert; overflow-anchor: revert; overflow-clip-margin: revert; overflow-wrap: revert; overflow: revert; overscroll-behavior-block: revert; overscroll-behavior-inline: revert; overscroll-behavior: revert; padding-block: revert; padding: 0px; padding-inline: revert; page: revert; page-orientation: revert; paint-order: revert; perspective: revert; perspective-origin: revert; pointer-events: revert; position: revert; quotes: revert; r: revert; resize: revert; rotate: revert; ruby-position: revert; rx: revert; ry: revert; scale: revert; scroll-behavior: revert; scroll-margin-block: revert; scroll-margin: revert; scroll-margin-inline: revert; scroll-padding-block: revert; scroll-padding: revert; scroll-padding-inline: revert; scroll-snap-align: revert; scroll-snap-stop: revert; scroll-snap-type: revert; scrollbar-gutter: revert; shape-image-threshold: revert; shape-margin: revert; shape-outside: revert; shape-rendering: revert; size: revert; speak: revert; stop-color: revert; stop-opacity: revert; stroke: revert; stroke-dasharray: revert; stroke-dashoffset: revert; stroke-linecap: revert; stroke-linejoin: revert; stroke-miterlimit: revert; stroke-opacity: revert; stroke-width: revert; tab-size: revert; table-layout: revert; text-align: center; text-align-last: revert; text-anchor: revert; text-combine-upright: revert; text-decoration: revert; text-decoration-skip-ink: revert; text-emphasis: revert; text-emphasis-position: revert; text-indent: revert; text-overflow: revert; text-shadow: revert; text-size-adjust: revert; text-transform: revert; text-underline-offset: revert; text-underline-position: revert; touch-action: revert; transform: revert; transform-box: revert; transform-origin: revert; transform-style: revert; transition: revert; translate: revert; user-select: revert; vector-effect: revert; vertical-align: middle; visibility: revert; border-spacing: revert; -webkit-box-align: revert; -webkit-box-decoration-break: revert; -webkit-box-direction: revert; -webkit-box-flex: revert; -webkit-box-ordinal-group: revert; -webkit-box-orient: revert; -webkit-box-pack: revert; -webkit-box-reflect: revert; -webkit-highlight: revert; -webkit-line-break: revert; -webkit-line-clamp: revert; -webkit-mask-box-image: revert; -webkit-mask: revert; -webkit-mask-composite: revert; -webkit-print-color-adjust: revert; -webkit-rtl-ordering: revert; -webkit-ruby-position: revert; -webkit-tap-highlight-color: revert; -webkit-text-combine: revert; -webkit-text-decorations-in-effect: revert; -webkit-text-fill-color: revert; -webkit-text-security: revert; -webkit-text-stroke: revert; -webkit-user-drag: revert; -webkit-user-modify: revert; white-space: revert; widows: revert; width: 20px; will-change: revert; word-break: revert; word-spacing: revert; x: revert; y: revert; z-index: revert;"><img src="chrome-extension://pbghcbaeehloijjcebiflemhcebmlnke/img/close16.png"></td></tr></tbody></table></td></tr></tbody></table></div></body></html>

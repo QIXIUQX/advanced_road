@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+	  <!--禁止移动端缩放-->
+	  <meta name="viewport"
+	        content="width=device-width, user-scalable=0, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+	  <!--优先使用webkit内核渲染-->
+	  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>

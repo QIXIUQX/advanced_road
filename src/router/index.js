@@ -1,29 +1,43 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import {edit} from "./edit";
 
-Vue.use(VueRouter)
+import QuestionTemplate from "@/components/Client/QuestionTemplate/QuestionTemplate.vue";
+import AdvancedRoad from "@/views/AdvancedRoad/AdvancedRoad.vue";
+
+
+Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+	{
+		path: "/",
+		redirect: "/AdvancedRoad"
+	},
+	{
+		path: "/AdvancedRoad",
+		component: AdvancedRoad
+	},
+	{
+		path: "/QuestionTemplate",
+		component: QuestionTemplate
+	},
+];
+
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+	// mode: "history",
+	base: process.env.BASE_URL,
+	routes,
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+	let matched = to.matched;
+	matched.forEach((item) => {
+		if (item.path === to.fullPath) {
+			document.title = item.meta.title;
+		}
+	});
+	next();
+});
+
+export default router;
